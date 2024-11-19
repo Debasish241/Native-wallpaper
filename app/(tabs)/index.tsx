@@ -1,11 +1,12 @@
-
-
+import { ImageCard } from "@/components/ImageCard";
 import ParallaxScrollView from "@/components/ParallaxScrollView";
+import { useWallpapers, Wallpaper } from "@/hooks/useWallpapers";
 import { Link } from "expo-router";
-import { Image, Text, View } from "react-native";
+import { FlatList, Image, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function explore() {
+  const wallpapers = useWallpapers();
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <ParallaxScrollView
@@ -23,8 +24,31 @@ export default function explore() {
           />
         }
       >
-        <Text>Explore Page</Text>
+        <View style={styles.container}>
+          <FlatList data={DATA} renderItem={({item})}/>
+          <View style={styles.innerContainer}>
+            {wallpapers.map((w: Wallpaper) => (
+              <ImageCard wallpaper={w} />
+            ))}
+          </View>
+          <View style={styles.container}>
+            {wallpapers.map((w: Wallpaper) => (
+              <ImageCard wallpaper={w} />
+            ))}
+          </View>
+        </View>
       </ParallaxScrollView>
     </SafeAreaView>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: "row",
+    flex: 1,
+  },
+  innerContainer: {
+    flex: 1,
+    padding: 20,
+  },
+});

@@ -1,16 +1,17 @@
-import { Image, StyleSheet, View } from "react-native";
 import { Wallpaper } from "@/hooks/useWallpapers";
-export function ImageCard() {
+import { Image, StyleSheet, View } from "react-native";
+
+export function ImageCard({ wallpaper }: { wallpaper: Wallpaper }) {
   return (
     <View>
-      <Image src={{ uri: Wallpaper.uri }} style={styles.image} />
+      <Image source={{ uri: wallpaper.url }} style={styles.image} />
     </View>
   );
 }
 
-const style = StyleSheet.create({
+const styles = StyleSheet.create({ 
   image: {
     flex: 1,
-    height: 300,
+    height: 200,
   },
 });
