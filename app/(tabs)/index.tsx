@@ -1,12 +1,22 @@
+import { DownloadPicture } from "@/components/BottomSheet";
 import { ImageCard } from "@/components/ImageCard";
 import ParallaxScrollView from "@/components/ParallaxScrollView";
+import { ThemedView } from "@/components/ThemedView";
 import { useWallpapers, Wallpaper } from "@/hooks/useWallpapers";
-import { Link } from "expo-router";
-import { FlatList, Image, StyleSheet, Text, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { useState } from "react";
+import {
+  FlatList,
+  Image,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 
 export default function explore() {
   const wallpapers = useWallpapers();
+  const [setselectedwallpaper, setSetselectedwallpaper] =
+    useState<null | Wallpaper>(null);
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <ParallaxScrollView
@@ -24,20 +34,44 @@ export default function explore() {
           />
         }
       >
-        <View style={styles.container}>
-          <FlatList data={DATA} renderItem={({item})}/>
-          <View style={styles.innerContainer}>
-            {wallpapers.map((w: Wallpaper) => (
-              <ImageCard wallpaper={w} />
-            ))}
-          </View>
-          <View style={styles.container}>
-            {wallpapers.map((w: Wallpaper) => (
-              <ImageCard wallpaper={w} />
-            ))}
-          </View>
-        </View>
+        <ThemedView style={styles.container}>
+          <ThemedView style={styles.innerContainer}>
+            <FlatList
+              data={wallpapers.filter((_, index) => index % 2 === 0)}
+              renderItem={({ item }) => (
+                <View style={styles.imageContainer}>
+                  <ImageCard
+                    onPress={() => {
+                      setSetselectedwallpaper(item);
+                    }}
+                    wallpaper={item}
+                  />
+                </View>
+              )}
+              keyExtractor={(item) => item.name}
+            />
+          </ThemedView>
+          <ThemedView style={styles.innerContainer}>
+            <FlatList
+              data={wallpapers.filter((_, index) => index % 2 === 1)}
+              renderItem={({ item }) => (
+                <View style={styles.imageContainer}>
+                  <ImageCard
+                    onPress={() => {
+                      setSetselectedwallpaper(item);
+                    }}
+                    wallpaper={item}
+                  />
+                </View>
+              )}
+              keyExtractor={(item) => item.name}
+            />
+          </ThemedView>
+        </ThemedView>
       </ParallaxScrollView>
+      {setselectedwallpaper && (
+        <DownloadPicture onClose={() => setSetselectedwallpaper(null)} />
+      )}
     </SafeAreaView>
   );
 }
@@ -45,10 +79,15 @@ export default function explore() {
 const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
+    // padding: 4,
     flex: 1,
+    // width: "100%",
   },
   innerContainer: {
     flex: 1,
-    padding: 20,
+    padding: 4,
+  },
+  imageContainer: {
+    paddingVertical: 10,
   },
 });
