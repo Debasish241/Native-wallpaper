@@ -29,7 +29,7 @@ export default function explore() {
               resizeMode: "cover",
             }}
             source={{
-              uri: "https://ideogram.ai/assets/progressive-image/balanced/response/3z31mvclQ_iNp1Oo3EEkMw",
+              uri: wallpapers[0]?.url ?? "",
             }}
           />
         }
@@ -70,7 +70,10 @@ export default function explore() {
         </ThemedView>
       </ParallaxScrollView>
       {setselectedwallpaper && (
-        <DownloadPicture onClose={() => setSetselectedwallpaper(null)} />
+        <DownloadPicture
+          wallpaper={setselectedwallpaper}
+          onClose={() => setSetselectedwallpaper(null)}
+        />
       )}
     </SafeAreaView>
   );
