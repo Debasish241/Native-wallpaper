@@ -14,6 +14,7 @@ import { Wallpaper } from "@/hooks/useWallpapers";
 import { Ionicons } from "@expo/vector-icons";
 import { Colors } from "@/constants/Colors";
 import { ThemedText } from "./ThemedText";
+import { ThemedView } from "./ThemedView";
 
 export const DownloadPicture = ({
   onClose,
@@ -44,36 +45,38 @@ export const DownloadPicture = ({
       handleStyle={{ display: "none" }}
     >
       <BottomSheetView style={styles.contentContainer}>
-        <Image
-          style={styles.image}
-          source={{
-            uri: wallpaper.url,
-          }}
-        />
-        <View style={styles.topbar}>
-          <Ionicons
-            name={"close"}
-            size={24}
-            color={theme == "light" ? Colors.light.icon : Colors.dark.icon}
+        <ThemedView style={{ flex: 1 }}>
+          <Image
+            style={styles.image}
+            source={{
+              uri: wallpaper.url,
+            }}
           />
-          <View style={styles.topbarInner}>
+          <View style={styles.topbar}>
             <Ionicons
-              name={"heart"}
+              name={"close"}
               size={24}
-              color={theme == "light" ? Colors.light.icon : Colors.dark.icon}
-              style={{ paddingRight: 4 }}
+              color={theme == "light" ? Colors.light.icon : Colors.dark.text}
             />
-            <Ionicons
-              name={"share"}
-              size={24}
-              color={theme == "light" ? Colors.light.icon : Colors.dark.icon}
-            />
+            <View style={styles.topbarInner}>
+              <Ionicons
+                name={"heart"}
+                size={24}
+                color={theme == "light" ? Colors.light.icon : Colors.dark.text}
+                style={{ paddingRight: 4 }}
+              />
+              <Ionicons
+                name={"share"}
+                size={24}
+                color={theme == "light" ? Colors.light.icon : Colors.dark.text}
+              />
+            </View>
           </View>
-        </View>
-        <View style={styles.textConatiner}>
-          <ThemedText style={styles.text}>{wallpaper.name}</ThemedText>
-        </View>
-        <DownloadButton />
+          <ThemedView style={styles.textConatiner}>
+            <ThemedText style={styles.text}>{wallpaper.name}</ThemedText>
+          </ThemedView>
+          <DownloadButton />
+        </ThemedView>
       </BottomSheetView>
     </BottomSheet>
   );
@@ -91,6 +94,8 @@ function DownloadButton() {
         justifyContent: "center",
         flexDirection: "row",
         borderRadius: 10,
+        borderColor: theme === "light" ? Colors.light.icon : Colors.dark.icon,
+        borderWidth: 1,
       }}
     >
       <Ionicons
@@ -145,7 +150,3 @@ const styles = StyleSheet.create({
     fontWeight: "600",
   },
 });
-
-
-
-//2.44.28

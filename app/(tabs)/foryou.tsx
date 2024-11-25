@@ -1,7 +1,18 @@
+import { SplitView } from "@/components/SplitView";
+import { ThemedView } from "@/components/ThemedView";
+import { Colors } from "@/constants/Colors";
+import {
+  useLibraryWallpapers,
+  useLikedWallpapers,
+  useSuggestedWallpapers,
+  useWallpapers,
+} from "@/hooks/useWallpapers";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
-import { Text, View } from "react-native";
+import { StyleSheet, useColorScheme, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 const Tab = createMaterialTopTabNavigator();
 export default function Foryou() {
+  const theme = useColorScheme() ?? "light";
   return (
     // <SafeAreaView>
     //   <Link href={"/liked"}>
@@ -16,47 +27,54 @@ export default function Foryou() {
     //   <Text>for you</Text>
     // </SafeAreaView>
 
-    <Tab.Navigator
-      screenOptions={{
-        tabBarShowLabel: true,
-        tabBarLabelStyle: { fontSize: 12 },
-        tabBarActiveTintColor: "blue",
-        tabBarInactiveTintColor: "gray",
-        tabBarIndicatorStyle: {
-          backgroundColor: "blue",
-        },
-      }}
-    >
-      <Tab.Screen
-        name="Library"
-        component={HomeScreen}
-        options={{ tabBarLabel: "Library" }}
-      />
-      <Tab.Screen
-        name="Liked"
-        component={SettingScreen}
-        options={{ tabBarLabel: "Liked" }}
-      />
-      <Tab.Screen
-        name="Suggested"
-        component={SettingScreen}
-        options={{ tabBarLabel: "Suggested" }}
-      />
-    </Tab.Navigator>
+    <SafeAreaView style={styles.container}>
+      <Tab.Navigator
+        style={{ flex: 1 }}
+        screenOptions={{
+          tabBarActiveTintColor: Colors[theme].tint,
+          backgroundColor: Colors[theme].background,
+        }}
+      >
+        <Tab.Screen name="Library" component={LibraryScreen} />
+        <Tab.Screen name="Liked" component={LikedScreen} />
+        <Tab.Screen name="Suggested" component={SuggestedScreen} />
+      </Tab.Navigator>
+    </SafeAreaView>
   );
 }
 
-function HomeScreen() {
+function LibraryScreen() {
+  const wallpapers = useLibraryWallpapers();
+
   return (
-    <View>
-      <Text>Home Screen</Text>
-    </View>
+    <ThemedView style={styles.container}>
+      <SplitView wallpapers={wallpapers} />
+    </ThemedView>
   );
 }
-function SettingScreen() {
+function LikedScreen() {
+  const wallpapers = useLikedWallpapers();
+
   return (
-    <View>
-      <Text>Settings Screen</Text>
-    </View>
+    <ThemedView style={styles.container}>
+      <SplitView wallpapers={wallpapers} />
+    </ThemedView>
   );
 }
+function SuggestedScreen() {
+  const wallpapers = useSuggestedWallpapers();
+
+  return (
+    <ThemedView style={styles.container}>
+      <SplitView wallpapers={wallpapers} />
+    </ThemedView>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+});
+
+//3.43
