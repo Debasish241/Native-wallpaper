@@ -5,12 +5,22 @@ import { ImageCard } from "./ImageCard";
 import { useState } from "react";
 import { DownloadPicture } from "./BottomSheet";
 
-export function SplitView({ wallpapers }: { wallpapers: Wallpaper[] }) {
+export function SplitView({
+  wallpapers,
+  onScroll,
+}: {
+  wallpapers: Wallpaper[];
+  onScroll?: (yOffset: number) => void;
+}) {
   const [setselectedwallpaper, setSetselectedwallpaper] =
     useState<null | Wallpaper>(null);
   return (
     <>
       <FlatList
+        onScroll={(e) => {
+          let yOffset = e.nativeEvent.contentOffset.y / 1;
+          onScroll?.(yOffset);
+        }}
         data={wallpapers
           .filter((_, index) => index % 2 === 0)
           .map((_, index) => [wallpapers[index], wallpapers[index + 1]])}

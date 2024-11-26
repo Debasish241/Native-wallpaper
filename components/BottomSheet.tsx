@@ -15,6 +15,8 @@ import { Ionicons } from "@expo/vector-icons";
 import { Colors } from "@/constants/Colors";
 import { ThemedText } from "./ThemedText";
 import { ThemedView } from "./ThemedView";
+import * as MediaLibrary from "expo-media-library";
+import * as FileSystem from "expo-file-system";
 
 export const DownloadPicture = ({
   onClose,
@@ -54,6 +56,7 @@ export const DownloadPicture = ({
           />
           <View style={styles.topbar}>
             <Ionicons
+              onPress={onClose}
               name={"close"}
               size={24}
               color={theme == "light" ? Colors.light.icon : Colors.dark.text}
@@ -75,17 +78,32 @@ export const DownloadPicture = ({
           <ThemedView style={styles.textConatiner}>
             <ThemedText style={styles.text}>{wallpaper.name}</ThemedText>
           </ThemedView>
-          <DownloadButton />
+          <DownloadButton url={wallpaper.url} />
         </ThemedView>
       </BottomSheetView>
     </BottomSheet>
   );
 };
 
-function DownloadButton() {
+function DownloadButton({ url }: { url: string }) {
   const theme = useColorScheme() ?? "light";
   return (
     <Pressable
+      onPress={async () => {
+        let date = new Date().getTime();
+        let fileUri = FileSystem.documentDirectory + `${date}.jpg`;
+        try {
+          const res = await FileSystem.downloadAsync(url, fileUri);
+          const response = await MediaLibrary.requestPermissionsAsync(true);
+          if (response.granted) {
+            MediaLibrary.createAssetAsync(fileUri);
+          } else {
+            console.error("Permission not granted");
+          }
+        } catch (error) {
+          console.log("FS error", error);
+        }
+      }}
       style={{
         backgroundColor: "black",
         padding: 10,

@@ -32,7 +32,14 @@ export default function Foryou() {
         style={{ flex: 1 }}
         screenOptions={{
           tabBarActiveTintColor: Colors[theme].tint,
-          backgroundColor: Colors[theme].background,
+          tabBarStyle: {
+            backgroundColor: Colors[theme].background,
+          },
+
+          tabBarIndicatorStyle: {
+            backgroundColor: Colors[theme].indicator,
+            height: 5,
+          },
         }}
       >
         <Tab.Screen name="Library" component={LibraryScreen} />

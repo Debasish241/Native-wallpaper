@@ -96,5 +96,26 @@ export function useWallpapers(): FullWallpaper[] {
       suggested: true,
       library: false,
     },
+    {
+      url: "https://ideogram.ai/assets/progressive-image/balanced/response/7TLJMBZwQFCbLllfbmVk4g",
+      name: "Volcano",
+      liked: true,
+      suggested: true,
+      library: true,
+    },
+    {
+      url: "https://ideogram.ai/assets/progressive-image/balanced/response/zWBYMKFVR_CPQ7zVjhikjw",
+      name: "Building",
+      liked: true,
+      suggested: true,
+      library: true,
+    },
+    {
+      url: "https://ideogram.ai/assets/progressive-image/balanced/response/uDT0LQksTI22uyHDOlhrGw",
+      name: "Imagine",
+      liked: true,
+      suggested: true,
+      library: true,
+    },
   ];
 }
