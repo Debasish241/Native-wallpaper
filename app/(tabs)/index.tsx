@@ -5,10 +5,14 @@ import { useWallpapers, Wallpaper } from "@/hooks/useWallpapers";
 import { useState } from "react";
 import { Dimensions, Image, StyleSheet, Text, View } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import Animated from "react-native-reanimated";
+import Animated, {
+  interpolate,
+  useAnimatedStyle,
+} from "react-native-reanimated";
 import Carousel from "react-native-reanimated-carousel";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ThemedText } from "@/components/ThemedText";
+import { ThemedSafeAreView } from "@/components/ThemedSafeAreaView";
 
 const TOPBAR_HEIGHT = 250;
 
@@ -17,9 +21,35 @@ export default function explore() {
   const width = Dimensions.get("window").width;
   const [yOffset, setScrollY] = useState(0);
   const carouselItems = useCarousel();
+
+  const headerAnimatedStyle = useAnimatedStyle(() => {
+    return {
+      transform: [
+        {
+          scale: interpolate(
+            yOffset,
+            [-TOPBAR_HEIGHT, 0, TOPBAR_HEIGHT],
+            [1.5, 1, 1]
+          ),
+        },
+      ],
+    };
+  });
+  const textAnimatedStyle = useAnimatedStyle(() => {
+    return {
+      opacity: interpolate(
+        yOffset,
+        [-TOPBAR_HEIGHT, TOPBAR_HEIGHT / 2, TOPBAR_HEIGHT],
+        [1, 1, 0]
+      ),
+    };
+  });
+
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <Animated.View style={{ height: TOPBAR_HEIGHT - yOffset }}>
+    <ThemedSafeAreView style={{ flex: 1 }}>
+      <Animated.View
+        style={[{ height: TOPBAR_HEIGHT - yOffset }, headerAnimatedStyle]}
+      >
         <Carousel
           loop
           width={width}
@@ -46,22 +76,27 @@ export default function explore() {
                   bottom: 0,
                 }}
               >
-                <Text
-                  style={{
-                    color: "white",
-                    paddingTop: TOPBAR_HEIGHT / 3,
-                    textAlign: "center",
-                    fontSize: 30,
-                    fontWeight: "600",
-                  }}
-                >
-                  {carouselItems[index].title}
-                </Text>
+                <Animated.View style={textAnimatedStyle}>
+                  <Text
+                    style={[
+                      {
+                        color: "white",
+                        paddingTop: TOPBAR_HEIGHT / 3,
+                        textAlign: "center",
+                        fontSize: 30,
+                        fontWeight: "600",
+                      },
+                    ]}
+                  >
+                    {carouselItems[index].title}
+                  </Text>
+                </Animated.View>
               </LinearGradient>
             </>
           )}
         />
       </Animated.View>
+      <View style={{ borderRadius: 20 }}></View>
       {/* <Text>Hi there</Text> */}
       <SplitView
         onScroll={(yOffset) => {
@@ -69,7 +104,7 @@ export default function explore() {
         }}
         wallpapers={wallpapers}
       />
-    </SafeAreaView>
+    </ThemedSafeAreView>
   );
 }
 

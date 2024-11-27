@@ -1,4 +1,5 @@
 import { DownloadPicture } from "@/components/BottomSheet";
+import { ThemedSafeAreView } from "@/components/ThemedSafeAreaView";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { Colors } from "@/constants/Colors";
@@ -14,22 +15,21 @@ import {
   Appearance,
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
-import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function account() {
   const theme = useColorScheme() ?? "light";
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <ThemedSafeAreView style={{ flex: 1 }}>
       <ScrollView style={{ flex: 1 }}>
         <Header />
         <ThemedView style={{ flex: 1 }}>
           <LoginButtons />
           <ThemeSelector />
-          
+
           <About />
         </ThemedView>
       </ScrollView>
-    </SafeAreaView>
+    </ThemedSafeAreView>
   );
 }
 function Header() {

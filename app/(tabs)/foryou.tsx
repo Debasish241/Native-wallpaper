@@ -1,4 +1,5 @@
 import { SplitView } from "@/components/SplitView";
+import { ThemedSafeAreView } from "@/components/ThemedSafeAreaView";
 import { ThemedView } from "@/components/ThemedView";
 import { Colors } from "@/constants/Colors";
 import {
@@ -27,7 +28,7 @@ export default function Foryou() {
     //   <Text>for you</Text>
     // </SafeAreaView>
 
-    <SafeAreaView style={styles.container}>
+    <ThemedSafeAreView style={styles.container}>
       <Tab.Navigator
         style={{ flex: 1 }}
         screenOptions={{
@@ -46,7 +47,7 @@ export default function Foryou() {
         <Tab.Screen name="Liked" component={LikedScreen} />
         <Tab.Screen name="Suggested" component={SuggestedScreen} />
       </Tab.Navigator>
-    </SafeAreaView>
+    </ThemedSafeAreView>
   );
 }
 

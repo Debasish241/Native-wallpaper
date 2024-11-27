@@ -94,9 +94,11 @@ function DownloadButton({ url }: { url: string }) {
         let fileUri = FileSystem.documentDirectory + `${date}.jpg`;
         try {
           const res = await FileSystem.downloadAsync(url, fileUri);
-          const response = await MediaLibrary.requestPermissionsAsync(true);
+          console.log("Donload result: ", res);
+          const response = await MediaLibrary.requestPermissionsAsync();
           if (response.granted) {
-            MediaLibrary.createAssetAsync(fileUri);
+            await MediaLibrary.createAssetAsync(fileUri);
+            alert("Image saved")
           } else {
             console.error("Permission not granted");
           }
